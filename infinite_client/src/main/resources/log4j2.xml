@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<properties>
+		<property name="PATTERN">[%d{yyyy-MM-dd HH:mm:ss.SSS}]: %-5p (%t)(%c): %m%n</property>
+		<property name="PATH">D:/data/logs/infinite/</property>
+		<property name="FILE">apl</property>
+		<property name="FILE-JSON">json</property>
+	</properties>
+
+	<appenders>
+		<Console name="CONSOLE" target="SYSTEM_OUT">
+			<PatternLayout pattern="${PATTERN}" />
+		</Console>
+		
+		<!--↓↓↓ JsonLog ↓↓↓ -->
+		<RollingFile name="ROLLING_JSONLOG" fileName="${PATH}${FILE-JSON}.log" filePattern="${PATH}${FILE-JSON}.log.%d{yyyy-MM-dd}">
+			<PatternLayout>
+				<Pattern>${PATTERN}</Pattern>
+			</PatternLayout>
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+			</Policies>
+		</RollingFile>
+		<!--↑↑↑ JsonLog ↑↑↑ -->
+
+		<RollingFile name="ROLLING_FILE_CONSOLE" fileName="${PATH}${FILE}.log" filePattern="${PATH}${FILE}.log.%d{yyyy-MM-dd}">
+			<PatternLayout>
+				<Pattern>${PATTERN}</Pattern>
+			</PatternLayout>
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+			</Policies>
+		</RollingFile>
+	</appenders>
+
+	<loggers>
+        <!--↓↓↓ JsonLog ↓↓↓-->
+        <logger name="JsonInOut" level="DEBUG" >
+		     <appender-ref ref="ROLLING_JSONLOG" />
+		</logger>
+        <!--↑↑↑ JsonLog ↑↑↑-->
+
+		<logger name="org.springframework.jndi" level="WARN" />
+		<logger name="org.apache.commons.beanutils" level="ERROR" />
+		<logger name="org.springframework.scheduling" level="ERROR" />
+
+		<root level="INFO">
+			<appender-ref ref="CONSOLE" />
+			<appender-ref ref="ROLLING_FILE_CONSOLE" />
+		</root>
+	</loggers>
+</configuration>
